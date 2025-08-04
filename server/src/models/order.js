@@ -1,11 +1,11 @@
-//model/Order.js
+// models/Order.js
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema(
   {
     user: {
-      types: mongoose.Schema.types.ObjectId,
-      ref: "User",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
     },
     items: [
       {
@@ -20,6 +20,14 @@ const orderSchema = new mongoose.Schema(
         },
       },
     ],
+    isRead: {
+      type: Boolean,
+      default: false,
+    },
+    isCleared: {
+      type: Boolean,
+      default: false,
+    },
     shippingAddress: {
       fullName: String,
       address: String,
@@ -29,8 +37,8 @@ const orderSchema = new mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      enum: ["Paypal", "COD"],
-      default: "Paypal",
+      enum: ["PayPal", "COD"],
+      default: "PayPal",
     },
     totalAmount: {
       type: Number,
@@ -48,9 +56,7 @@ const orderSchema = new mongoose.Schema(
     deliveredAt: Date,
     paypalOrderId: String,
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 export default mongoose.model("Order", orderSchema);
