@@ -1,20 +1,20 @@
 import nodemailer from "nodemailer";
 
-export const sendOrderConfirmationEmail = async (req, res) => {
-    const transporter = nodemailer.createTransport({
-        service :"Gmail",
-        auth :{
-            user : process.env.EMAIL_USER,
-            pass : process.env.EMAIL_PASS,
-        },
-    })
+export const sendOrderConfirmationEmail = async (email, order) => {
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
 
-    const mailOptions = {
-        from : `"Shopify Clone" <${process.env.EMAIL_USER}>`,
-        to,
-        subject : "Order Confirmation - Shopify Clone",
-        html :`
-        <div style="font-family: Arial, sans-serif; padding: 20px;">
+  const mailOptions = {
+    from: `"Shopify Clone" <${process.env.EMAIL_USER}>`,
+    to: "r3557452@gmail.com", // Pass the recipient's email here
+    subject: "Order Confirmation - Shopify Clone",
+    html: `
+      <div style="font-family: Arial, sans-serif; padding: 20px;">
         <h2>✅ Order Placed Successfully!</h2>
         <p>Thank you for shopping with us, <strong>${order.shippingAddress.fullName}</strong>.</p>
         <p><strong>Order ID:</strong> ${order._id}</p>
@@ -31,7 +31,8 @@ export const sendOrderConfirmationEmail = async (req, res) => {
         <hr/>
         <p style="font-size: 12px; color: gray;">This is an automated message from Shopify Clone</p>
       </div>
-      `,
-    };
-    await transporter.sendMail(mailOptions);
-}
+    `,
+  };
+
+  await transporter.sendMail(mailOptions);
+};

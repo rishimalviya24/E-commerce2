@@ -1,6 +1,6 @@
 import Order from "../models/order.js";
 import Product from "../models/product.js";
-import User from "../models/user.js"; // ✅ Required for populate to work correctly
+import { sendOrderConfirmationEmail } from "../utils/emailSender.js";
 
 // Create a new order
 export const createOrder = async (req, res) => {
@@ -12,7 +12,7 @@ export const createOrder = async (req, res) => {
 
   try {
     const order = new Order({
-      user: req.user._id,
+      user: req.user?._id,
       items,
       shippingAddress,
       paymentMethod,
@@ -20,6 +20,12 @@ export const createOrder = async (req, res) => {
     });
 
     const savedOrder = await order.save();
+
+    if (req.user?.email) {
+      await sendOrderConfirmationEmail(req.user.email, savedOrder);
+    } else {
+      console.warn("User email not available for sending confirmation.");
+    }
 
     // Reduce stock
     for (const item of items) {
@@ -41,7 +47,7 @@ export const createOrder = async (req, res) => {
 export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find()
-      .populate("user", "name email") // ✅ fix
+      .populate("user", "name email")
       .populate("items.product", "title price");
     res.status(200).json(orders);
   } catch (error) {
@@ -85,7 +91,7 @@ export const getOrderById = async (req, res) => {
 };
 
 // Admin: Mark order as delivered
-export const markDeliversed = async (req, res) => {
+export const markDelivered = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
 

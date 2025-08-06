@@ -1,4 +1,4 @@
-import notification from "../models/notification.js";
+import Notification from "../models/notification.js";
 
 //create Notification --------
 export const createNotification = async (req, res) => {
@@ -56,7 +56,8 @@ export const markNotificationRead = async (req, res) => {
 
     res.status(500).json({ error: err.message });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(200).json({ message: "Notification marked as read" });
+
   }
 };
 

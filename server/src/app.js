@@ -7,6 +7,8 @@ import productRoutes from './routes/product.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import addressRoutes from './routes/address.routes.js';
 import notificationRoutes from './models/notification.js';
+import discountRoutes from './models/discount.js';
+import paymentRoutes from './routes/payment.routes.js'
 
 const app = express();
 
@@ -21,5 +23,7 @@ app.use('/api/product', productRoutes);
 app.use('/api/order', orderRoutes);
 app.use('/api/address', addressRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/discounts', discountRoutes);
+app.use('/api/payments', paymentRoutes);
 
 export default app;
